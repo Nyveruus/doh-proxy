@@ -11,7 +11,7 @@ import (
 )
 
 const listenAddr string = ":53"
-const bufferSize uint16 = 512
+const bufferSize int = 512
 
 func main() {
 	connection, err := net.ListenPacket("udp", listenAddr)
@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	buffer := make([]byte, bytesRead)
+	buffer := make([]byte, bufferSize)
 	for {
 		bytesRead, addr, err := connection.ReadFrom(buffer)
 		if err != nil {
@@ -30,6 +30,27 @@ func main() {
 		query := make([]byte, bytesRead)
 		copy(query, buffer)
 
-
+		go handleQuery(connection, addr, query)
 	}
+}
+
+func handleQuery(connection net.PacketConn, addr net.Addr, query []byte) {
+	//check if valid
+	m := new(dns.Msg)
+	if err := m.Unpack(query); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to unpack: %v", err)
+		return
+	}
+
+	//doh
+	response, err := forwardDoH(query)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "DoH query failed: %v", err)
+		return
+	}
+	//write back to client
+}
+
+func forwardDoH(query []byte) {
+
 }
