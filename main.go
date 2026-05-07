@@ -20,12 +20,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	buffer [512]byte
+	buffer := make([]byte, bytesRead)
 	for {
-		bytesRead, addr, err := connection.ReadFrom(buffer[:])
+		bytesRead, addr, err := connection.ReadFrom(buffer)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Read error: %v", err)
 			continue
 		}
+		query := make([]byte, bytesRead)
+		copy(query, buffer)
+
+
 	}
 }
