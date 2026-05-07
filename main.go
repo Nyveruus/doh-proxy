@@ -11,11 +11,21 @@ import (
 )
 
 const listenAddr string = ":53"
+const bufferSize uint16 = 512
 
 func main() {
-	connection, err := net.ListenPacket(udp, listenAddr)
+	connection, err := net.ListenPacket("udp", listenAddr)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to listen: %v", err)
 		os.Exit(1)
+	}
+
+	buffer [512]byte
+	for {
+		bytesRead, addr, err := connection.ReadFrom(buffer[:])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Read error: %v", err)
+			continue
+		}
 	}
 }
