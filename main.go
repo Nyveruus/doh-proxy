@@ -14,7 +14,7 @@ import (
 )
 
 const listenAddr string = ":53"
-const bufferSize int = 512
+const bufferSize int = 4096
 const DoHAddr string = "https://cloudflare-dns.com/dns-query"
 
 func main() {
