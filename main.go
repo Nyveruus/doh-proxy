@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"os"
 	"net"
+	"net/http"
+	"io"
+	"bytes"
 	"codeberg.org/miekg/dns"
 )
 
@@ -37,12 +40,10 @@ func main() {
 
 func handleQuery(connection net.PacketConn, addr net.Addr, query []byte) {
 	//check if valid
-	m := new(dns.Msg)
-	if err := m.Unpack(query); err != nil {
+	if err := new(dns.Msg).Unpack(query); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to unpack: %v", err)
 		return
 	}
-
 	//doh
 	response, err := forwardDoH(query)
 	if err != nil {
@@ -50,6 +51,9 @@ func handleQuery(connection net.PacketConn, addr net.Addr, query []byte) {
 		return
 	}
 	//write back to client
+	if _, err := connection.WriteTo(response, addr); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to write response: %v", err)
+	}
 }
 
 func forwardDoH(query []byte) ([]byte, error) {
@@ -60,7 +64,7 @@ func forwardDoH(query []byte) ([]byte, error) {
 	request.Header.Set("Content-Type", "application/dns-message")
 	request.Header.Set("Accept", "application/dns-message")
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		return nil, fmt.Errorf("HTTP request failed: %w", err)
 	}
