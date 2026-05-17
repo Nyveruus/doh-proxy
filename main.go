@@ -40,7 +40,9 @@ func main() {
 
 func handleQuery(connection net.PacketConn, addr net.Addr, query []byte) {
 	//check if valid
-	if err := new(dns.Msg).Unpack(query); err != nil {
+	m := new(dns.Msg)
+	m.Data = query
+	if err := m.Unpack(); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to unpack: %v", err)
 		return
 	}
