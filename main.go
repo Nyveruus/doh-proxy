@@ -12,6 +12,7 @@ import (
 
 const listenAddr string = ":53"
 const bufferSize int = 512
+const DoHAddr string = "https://cloudflare-dns.com/dns-query"
 
 func main() {
 	connection, err := net.ListenPacket("udp", listenAddr)
@@ -51,6 +52,23 @@ func handleQuery(connection net.PacketConn, addr net.Addr, query []byte) {
 	//write back to client
 }
 
-func forwardDoH(query []byte) {
+func forwardDoH(query []byte) ([]byte, error) {
+	request, err := http.NewRequest("POST", DoHAddr, bytes.NewReader(query))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+	request.Header.Set("Content-Type", "application/dns-message")
+	request.Header.Set("Accept", "application/dns-message")
 
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("HTTP request failed: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("upstream returned %d", resp.StatusCode)
+	}
+
+	return io.ReadAll(resp.Body)
 }
