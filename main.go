@@ -15,7 +15,7 @@ import (
 
 const listenAddr string = ":53"
 const bufferSize int = 4096
-const DoHAddr string = "https://cloudflare-dns.com/dns-query"
+const DoHAddr string = "https://1.1.1.1/dns-query"
 
 func main() {
 	connection, err := net.ListenPacket("udp", listenAddr)
