@@ -20,14 +20,13 @@ Minimalistic service for home networks written in Go that takes plain DNS querie
 
 ## Usage
 
-### Requirements
-- Go 1.26+
 ```
 $ sudo ./install.sh
 $ systemctl enable --now doh-proxy
 ```
 Set local IP as the DNS server in your router or DHCP settings.
-
+### Requirements
+- Go 1.26+
 ## History
 
 The idea developed when setting up a new home network with a Mikrotik router. After configuring its DNS resolver with DoH, it would strip ECH records causing SNI to be exposed in TLS handshakes. ECH needs to be preserved to prevent SNI-based blocking, so I wrote something light intended to run on a Raspberry Pi.
