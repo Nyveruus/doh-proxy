@@ -20,6 +20,8 @@ Minimalistic service for home networks written in Go that takes plain DNS querie
 
 ## Usage
 
+### Requirements
+- Go 1.26+
 ```
 $ sudo ./install.sh
 $ systemctl enable --now doh-proxy
