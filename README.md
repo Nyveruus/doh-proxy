@@ -1,6 +1,8 @@
-<header>
 <h1 align="center">
-  <a href="https://github.com/Nyveruus/doh-proxy">DoH Proxy<img src=".assets/banner.jpg" alt="doh-proxy"></a>
+  <a href="https://github.com/Nyveruus/doh-proxy">
+    DoH Proxy
+    <img src=".assets/banner.jpg" alt="doh-proxy" width="400">
+  </a>
   <br>
 </h1>
 <p align="center">
