@@ -6,7 +6,7 @@
 </p>
 <h1 align="center">DoH Proxy</h1>
 <p align="center">
-Keep DNS queries private and prevent SNI-based blocking & interception without per-host configuration
+Prevent DNS & SNI-based blocking and interception without per-host configuration
 </p>
 <p align="center">
   <img src="https://img.shields.io/github/contributors/nyveruus/doh-proxy?style=flat-square" alt="Contributors">
