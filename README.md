@@ -29,4 +29,4 @@ Set local IP as the DNS server in your router or DHCP settings.
 - Go 1.26+
 ## History
 
-The idea developed when setting up a new home network with a Mikrotik router. After configuring its DNS resolver with DoH, it would strip ECH records causing SNI to be exposed in TLS handshakes. ECH needs to be preserved to prevent SNI-based blocking, so I wrote something light intended to run on a Raspberry Pi.
+The idea developed when setting up a new home network with a Mikrotik router. After configuring its DNS resolver with DoH, it would strip ECH records causing SNI to be exposed in TLS handshakes. ECH needs to be preserved to prevent SNI-based blocking, leading to why this project was created, specifically for running on a Raspberry Pi.
